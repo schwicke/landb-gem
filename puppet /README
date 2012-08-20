@@ -1,0 +1,33 @@
+Put both files (landb_func.rb, landb_config.yml) into: 
+	
+	/var/lib/puppet/lib/puppet/parser/functions
+	
+If you have an other path for puppet functions, you should change the yaml config path inside landb_func.rb at line: 10
+
+	YAML.load(File.open("/var/lib/puppet/lib/puppet/parser/functions"))
+
+should be 
+
+	YAML.load(File.open("#{My_Path_to_YAML_Config}"))
+	
+An example for puppet:
+
+On a test.pp file write:
+
+	$hash = cern_lan_db_func({ "method" => "get_device_info",
+	                      "method_arguments" => "PCITCS57",
+	                      "responce_info" => [["device_info", "responsible_person", "name"], ["device_info", "responsible_person", "email"]]
+	                    })
+	notify { $hash: }
+	
+Run with:
+	
+	puppet apply --noop sha2.pp
+	
+Output should be something like:
+
+	notice: /Stage[main]//Notify[LUNA DURAN]/message: current_value absent, should be LUNA DURAN (noop)
+	notice: /Stage[main]//Notify[Jose.Carlos.Luna@cern.ch]/message: current_value absent, should be Jose.Carlos.Luna@cern.ch (noop)
+	notice: Class[Main]: Would have triggered 'refresh' from 2 events
+	notice: Stage[main]: Would have triggered 'refresh' from 1 events
+	notice: Finished catalog run in 0.04 seconds

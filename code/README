@@ -1,0 +1,33 @@
+This is this code for LanDB. To build the gem use:
+
+	gem build landb.gemspec; mv landb*.gem ../gem/
+	
+	
+To test the gem or use the help menu start irb after you installed the gem and all dependences:
+
+Require all needed:
+
+	require 'rubygems'
+	require 'landb.rb'
+
+Setup the configuration:
+
+	LandbClient.set_config({'wsdl' => 'https://network.cern.ch/sc/soap/soap.fcgi?v=4&WSDL', 
+							'username' => "test", 
+							'password' => "test"
+					   		})
+
+Ask for the client:
+	test_client = LandbClient.instance
+
+You can see all the operations your host is offering with:
+	test_client.help_all_operations
+
+Choose the operation you want to check for input:
+
+e.g.
+	>> test_client.help_arguments_for_operation :get_device_info
+	=> [:device_name]
+
+	>> test_client.help_arguments_for_operation :get_auth_token
+	=> [:login, :password, :type]
