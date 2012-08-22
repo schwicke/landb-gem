@@ -4,7 +4,7 @@ Put both files (landb_func.rb, landb_config.yml) into:
 	
 If you have an other path for puppet functions, you should change the yaml config path inside landb_func.rb at line: 10
 
-	YAML.load(File.open("/var/lib/puppet/lib/puppet/parser/functions"))
+	YAML.load(File.open("/etc/puppet/landb_config.yml"))
 
 should be 
 
