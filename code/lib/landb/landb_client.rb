@@ -1,9 +1,7 @@
 class LandbClient
   
-  @@instance = LandbClient.new
-  
   def self.instance
-    return @@instance
+    @@instance ||= LandbClient.new
   end
   
   def self.set_config(config)

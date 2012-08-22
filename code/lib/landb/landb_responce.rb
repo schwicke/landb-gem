@@ -5,7 +5,7 @@ class LandbResponse
       next if k.to_s =~ /@|:/
       
       if v.instance_of? Hash
-        self.instance_variable_set("@#{k}", CERNLanDBResponse.new(v))  ## create and initialize an instance variable for this hash.
+        self.instance_variable_set("@#{k}", LandbResponse.new(v))  ## create and initialize an instance variable for this hash.
       else
         self.instance_variable_set("@#{k}", v)  ## create and initialize an instance variable for this key/value pair.
       end
