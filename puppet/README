@@ -16,7 +16,7 @@ On a test.pp file write:
 
 	$hash = cern_lan_db_func({ "method" => "get_device_info",
 	                      "method_arguments" => "PCITCS57",
-	                      "responce_info" => [["device_info", "responsible_person", "name"], ["device_info", "responsible_person", "email"]]
+	                      "response_info" => [["device_info", "responsible_person", "name"], ["device_info", "responsible_person", "email"]]
 	                    })
 	notify { $hash: }
 	
