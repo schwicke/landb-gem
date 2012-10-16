@@ -1,0 +1,14 @@
+In side this folder there is the landb gem file.
+
+To install it:
+
+	a) Copy the file localy to puppet master.
+	b) sudo gem install ./landb...(gem path)
+	c) enjoy :)
+	
+There are some other things that must pre exist:
+
+	a) sudo yum install ruby-devel
+	b) sudo yum install rubygems
+	c) sudo gem install rake
+	d) sudo gem install savon 

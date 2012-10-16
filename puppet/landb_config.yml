@@ -1,0 +1,3 @@
+wsdl: https://network.cern.ch/sc/soap/soap.fcgi?v=4&WSDL
+username: test
+password: test
