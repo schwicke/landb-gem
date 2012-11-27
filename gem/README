@@ -10,5 +10,8 @@ There are some other things that must pre exist:
 
 	a) sudo yum install ruby-devel
 	b) sudo yum install rubygems
-	c) sudo gem install rake
-	d) sudo gem install savon 
+  c) sudo yum install -y rubygem-nokogiri
+	d) sudo gem install rake
+	e) sudo gem install savon 
+
+Require rubygems on your script beforehand

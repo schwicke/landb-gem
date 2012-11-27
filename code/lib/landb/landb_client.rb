@@ -32,6 +32,7 @@ class LandbClient
     # Create a hash that contains all the operations and arguments that SOAP server supports.
     # e.g. The get_auth_token action is taking 3 arguments: Login, Password, Type.
     @operations_to_arguments_hash = get_all_operations_and_arguments
+    debugger
     
     # For each action the SOAP server supports, we create a dynamic method for our class.
     @client.wsdl.soap_actions.each do |method_name|
@@ -113,8 +114,9 @@ class LandbClient
         next unless child_node.element? && child_node.name == "input"
 
         child_node.children.each do |att| 
+          hash[action.attributes["name"].value.snakecase.to_sym] ||= []
           next unless att.element?
-          next if att.attributes["parts"] == nil
+          next if att.attributes["parts"].nil?
           hash[action.attributes["name"].value.snakecase.to_sym] = att.attributes["parts"].value.split(" ").collect {|p| p.snakecase.to_sym }
         end
       end

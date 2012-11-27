@@ -1,0 +1,2797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: beginwsdl.xml 908 2009-03-19 15:57:12Z apache $ -->
+
+<wsdl:definitions name="NetworkServiceDescription"
+    xmlns="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    targetNamespace="urn:NetworkService"
+    xmlns:tns="urn:NetworkService"
+    xmlns:types="urn:NetworkDataTypes"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
+
+
+<!-- Jose.Carlos.Luna@cern.ch -->
+<!-- Services offered -->
+
+<!-- In the future we should move to WS-I Basic Profile -->
+
+<wsdl:service name="SOAPNetworkService">
+   <wsdl:port name="NetworkServicePort" 
+              binding="tns:NetworkServiceBinding">
+       <soap:address location="https://network.cern.ch/sc/soap/soap.fcgi?v=4" />
+   </wsdl:port>
+</wsdl:service>
+
+
+
+<!-- Messages definitions -->
+
+<wsdl:message name="getAuthTokenRequest">
+   <wsdl:part name="Login" type="xsd:string" />
+   <wsdl:part name="Password" type="xsd:string" />
+   <wsdl:part name="Type" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getAuthTokenResponse">
+   <wsdl:part name="Result" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="searchDeviceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceSearch" type="types:DeviceSearch" />
+</wsdl:message>
+
+<wsdl:message name="searchDeviceResponse">
+   <wsdl:part name="DeviceList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoResponse">
+   <wsdl:part name="Device" type="types:DeviceInfo" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoArrayRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceNameList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoArrayResponse">
+   <wsdl:part name="DeviceInfoList" type="types:ArrayOfDeviceInfo" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoFromNameMACRequest">
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="MAC" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getDeviceInfoFromNameMACResponse">
+   <wsdl:part name="Device" type="types:DeviceInfo" />
+</wsdl:message>
+
+<wsdl:message name="getMyDeviceInfoRequest">
+</wsdl:message>
+
+<wsdl:message name="getMyDeviceInfoResponse">
+   <wsdl:part name="Device" type="types:DeviceInfo" />
+</wsdl:message>
+
+<wsdl:message name="getLastChangedDevicesRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Minutes" type="xsd:int" />
+</wsdl:message>
+
+<wsdl:message name="getLastChangedDevicesResponse">
+   <wsdl:part name="DeviceList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="bulkInsertRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Device" type="types:DeviceInput" />
+   <wsdl:part name="Cards" type="types:ArrayOfInterfaceCards" />
+   <wsdl:part name="Interfaces" type="types:ArrayOfBulkInterfaces" />
+</wsdl:message>
+
+<wsdl:message name="bulkInsertResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="bulkInsertAutoRequest">
+   <wsdl:part name="Device" type="types:DeviceInput" />
+   <wsdl:part name="Cards" type="types:ArrayOfInterfaceCards" />
+   <wsdl:part name="Interfaces" type="types:ArrayOfBulkInterfacesAuto" />
+</wsdl:message>
+
+<wsdl:message name="bulkInsertAutoResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="bulkRemoveRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="bulkRemoveResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceInsertRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Device" type="types:DeviceInput" />
+</wsdl:message>
+
+<wsdl:message name="deviceInsertResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddCardRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="InterfaceCard" type="types:InterfaceCard" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddCardResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddBulkInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="BulkInterface" type="types:BulkInterface" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddBulkInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveCardRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="HardwareAddress" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveCardResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveBulkInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveBulkInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceMoveBulkInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="BulkInterface" type="types:BulkInterface" />
+   <wsdl:part name="BulkMoveOptions" type="types:BulkMoveOptions" />
+</wsdl:message>
+
+<wsdl:message name="deviceMoveBulkInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceUpdateRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="DeviceInput" type="types:DeviceInput" />
+</wsdl:message>
+
+<wsdl:message name="deviceUpdateResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceGlobalRenameRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="NewDeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="deviceGlobalRenameResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setHCPResponseRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceList" type="types:ArrayOfString" />
+   <wsdl:part name="HCPFlag" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setHCPResponseResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="getBulkInterfaceInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getBulkInterfaceInfoResponse">
+   <wsdl:part name="BulkInterface" type="types:BulkInterface" />
+</wsdl:message>
+
+<wsdl:message name="setInsertAddressRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Set" type="xsd:string" />
+   <wsdl:part name="Address" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setInsertAddressResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setInsertServiceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Set" type="xsd:string" />
+   <wsdl:part name="Service" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setInsertServiceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setDeleteAddressRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Set" type="xsd:string" />
+   <wsdl:part name="Address" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setDeleteAddressResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setDeleteServiceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Set" type="xsd:string" />
+   <wsdl:part name="Service" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setDeleteServiceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="getSetInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSetInfoResponse">
+   <wsdl:part name="SetInfo" type="types:SetInfo" />
+</wsdl:message>
+
+<wsdl:message name="getSetNameFromIDRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetID" type="xsd:long" />
+</wsdl:message>
+
+<wsdl:message name="getSetNameFromIDResponse">
+   <wsdl:part name="SetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSetAllInterfacesRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSetAllInterfacesResponse">
+   <wsdl:part name="Interfaces" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getSetInterfacesTrustingRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSetInterfacesTrustingResponse">
+   <wsdl:part name="Interfaces" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getHCPInfoArrayRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Hosts" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getHCPInfoArrayResponse">
+   <wsdl:part name="HostsInfo" type="types:ArrayOfInetInfo" />
+</wsdl:message>
+
+<wsdl:message name="getDevicesFromServiceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Service" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getDevicesFromServiceResponse">
+   <wsdl:part name="Hosts" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchesFromServiceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Service" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchesFromServiceResponse">
+   <wsdl:part name="Hosts" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchInfoResponse">
+   <wsdl:part name="SwitchInfo" type="types:ArrayOfSwitchPort" />
+</wsdl:message>
+
+<wsdl:message name="getConnectionsFromDeviceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getConnectionsFromDeviceResponse">
+   <wsdl:part name="ConnectionInfo" type="types:ArrayOfConnection" />
+</wsdl:message>
+
+<wsdl:message name="getOutletLocationFromSwitchPortRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+   <wsdl:part name="PortName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getOutletLocationFromSwitchPortResponse">
+   <wsdl:part name="OutletLocation" type="types:OutletLocation" />
+</wsdl:message>
+
+<wsdl:message name="getCurrentConnectionRequest">
+   <wsdl:part name="ip" type="xsd:string" />
+   <wsdl:part name="HardwareAddressList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getCurrentConnectionResponse">
+   <wsdl:part name="ObservedConnections" type="types:ArrayOfObservedSwitchConnection" />
+</wsdl:message>
+
+<wsdl:message name="getMyCurrentConnectionRequest">
+   <wsdl:part name="HardwareAddressList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="getMyCurrentConnectionResponse">
+   <wsdl:part name="ObservedConnections" type="types:ArrayOfObservedSwitchConnection" />
+</wsdl:message>
+
+<wsdl:message name="enableFanOutFromSwitchPortRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+   <wsdl:part name="PortName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="enableFanOutFromSwitchPortResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setUnsetBindedInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="HardwareAddress" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setUnsetBindedInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="interfaceAddAliasRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="Alias" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="interfaceAddAliasResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="interfaceRemoveAliasRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="Alias" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="interfaceRemoveAliasResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="interfaceMoveAliasRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="Alias" type="xsd:string" />
+   <wsdl:part name="NewInterfaceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="interfaceMoveAliasResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="interfaceRenameRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="NewInterfaceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="interfaceRenameResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="searchSetRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetPattern" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="searchSetResponse">
+   <wsdl:part name="Sets" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="setInsertRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Set" type="types:SetInput" />
+</wsdl:message>
+
+<wsdl:message name="setInsertResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setRemoveRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setRemoveResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setSwitchPortTypeStatusRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+   <wsdl:part name="PortName" type="xsd:string" />
+   <wsdl:part name="SwitchPortTypeStatus" type="types:SwitchPortTypeStatus" />
+</wsdl:message>
+
+<wsdl:message name="setSwitchPortTypeStatusResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="setSwitchPortServiceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+   <wsdl:part name="PortName" type="xsd:string" />
+   <wsdl:part name="Service" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="setSwitchPortServiceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchPortTypeStatusRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="SwitchName" type="xsd:string" />
+   <wsdl:part name="PortName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getSwitchPortTypeStatusResponse">
+   <wsdl:part name="SwitchPortTypeStatus" type="types:SwitchPortTypeStatus" />
+</wsdl:message>
+
+<wsdl:message name="searchNetNameTableRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="NetName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="searchNetNameTableResponse">
+   <wsdl:part name="NetNameTable" type="types:ArrayOfNetNameTuple" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddSecondaryInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="BaseInterfaceName" type="xsd:string" />
+   <wsdl:part name="LogicalInterface" type="types:LogicalInterfaceInput" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddSecondaryInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddIPMIInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="BaseInterfaceName" type="xsd:string" />
+   <wsdl:part name="InterfaceCard" type="types:InterfaceCard" />
+   <wsdl:part name="IPMIOptions" type="types:IPMIOptions" />
+</wsdl:message>
+
+<wsdl:message name="deviceAddIPMIInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveLogicalInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="deviceRemoveLogicalInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="interfaceUpdateDescriptionRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="Description" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="interfaceUpdateDescriptionResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="serviceUpdateDescriptionRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="ServiceName" type="xsd:string" />
+   <wsdl:part name="Description" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="serviceUpdateDescriptionResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="deviceSyncIPMIInterfaceRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="InterfaceName" type="xsd:string" />
+   <wsdl:part name="IPMIInterfaceName" type="xsd:string" />
+   <wsdl:part name="IPMIOptions" type="types:IPMIOptions" />
+</wsdl:message>
+
+<wsdl:message name="deviceSyncIPMIInterfaceResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="getServiceInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="ServiceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="getServiceInfoResponse">
+   <wsdl:part name="ServiceInfo" type="types:ServiceInfo" />
+</wsdl:message>
+
+<wsdl:message name="vmCreateRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMDevice" type="types:DeviceInput" />
+   <wsdl:part name="InterfaceCard" type="types:InterfaceCard" />
+   <wsdl:part name="VMClusterName" type="xsd:string" />
+   <wsdl:part name="VMParent" type="xsd:string" />
+   <wsdl:part name="VMOptions" type="types:VMOptions" />
+</wsdl:message>
+
+<wsdl:message name="vmCreateResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="vmMigrateRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMName" type="xsd:string" />
+   <wsdl:part name="NewParent" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmMigrateResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="vmMoveRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMName" type="xsd:string" />
+   <wsdl:part name="VMClusterName" type="xsd:string" />
+   <wsdl:part name="VMParent" type="xsd:string" />
+   <wsdl:part name="VMOptions" type="types:VMOptions" />
+</wsdl:message>
+
+<wsdl:message name="vmMoveResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="vmUpdateRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="DeviceInput" type="types:DeviceInput" />
+</wsdl:message>
+
+<wsdl:message name="vmUpdateResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="vmDestroyRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmDestroyResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="vmClusterGetInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMClusterName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmClusterGetInfoResponse">
+   <wsdl:part name="VMClusterInfo" type="types:VMClusterInfo" />
+</wsdl:message>
+
+<wsdl:message name="vmClusterGetDevicesRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMClusterName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmClusterGetDevicesResponse">
+   <wsdl:part name="Hosts" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="vmGetInfoRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmGetInfoResponse">
+   <wsdl:part name="VMInfo" type="types:VMInfo" />
+</wsdl:message>
+
+<wsdl:message name="vmGetClusterMembershipRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="vmGetClusterMembershipResponse">
+   <wsdl:part name="VMClusterList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="vmSearchClusterRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="VMClusterSearch" type="types:VMClusterSearch" />
+</wsdl:message>
+
+<wsdl:message name="vmSearchClusterResponse">
+   <wsdl:part name="VMClusterList" type="types:ArrayOfString" />
+</wsdl:message>
+
+<wsdl:message name="dnsZoneUpdateRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="Zone" type="xsd:string" />
+   <wsdl:part name="DnsZoneOptions" type="types:DnsZoneOptions" />
+</wsdl:message>
+
+<wsdl:message name="dnsZoneUpdateResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="svcPrincipalAddRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="ServiceName" type="xsd:string" />
+   <wsdl:part name="Person" type="types:PersonInput" />
+</wsdl:message>
+
+<wsdl:message name="svcPrincipalAddResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<wsdl:message name="svcPrincipalRemoveRequest">
+   <wsdl:part name="Auth" type="types:Auth" />
+   <wsdl:part name="DeviceName" type="xsd:string" />
+   <wsdl:part name="ServiceName" type="xsd:string" />
+</wsdl:message>
+
+<wsdl:message name="svcPrincipalRemoveResponse">
+   <wsdl:part name="Result" type="xsd:boolean" />
+</wsdl:message>
+
+<!-- Port types / Interfaces -->
+<wsdl:portType name="NetworkServiceInterface">
+
+    <wsdl:operation name="getAuthToken">
+        <wsdl:input name="getAuthTokenRequest" message="tns:getAuthTokenRequest"/>
+        <wsdl:output name="getAuthTokenResponse" message="tns:getAuthTokenResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="searchDevice">
+        <wsdl:input name="searchDeviceRequest" message="tns:searchDeviceRequest"/>
+        <wsdl:output name="searchDeviceResponse" message="tns:searchDeviceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfo">
+        <wsdl:input name="getDeviceInfoRequest" message="tns:getDeviceInfoRequest"/>
+        <wsdl:output name="getDeviceInfoResponse" message="tns:getDeviceInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfoArray">
+        <wsdl:input name="getDeviceInfoArrayRequest" message="tns:getDeviceInfoArrayRequest"/>
+        <wsdl:output name="getDeviceInfoArrayResponse" message="tns:getDeviceInfoArrayResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfoFromNameMAC">
+        <wsdl:input name="getDeviceInfoFromNameMACRequest" message="tns:getDeviceInfoFromNameMACRequest"/>
+        <wsdl:output name="getDeviceInfoFromNameMACResponse" message="tns:getDeviceInfoFromNameMACResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getMyDeviceInfo">
+        <wsdl:input name="getMyDeviceInfoRequest" message="tns:getMyDeviceInfoRequest"/>
+        <wsdl:output name="getMyDeviceInfoResponse" message="tns:getMyDeviceInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getLastChangedDevices">
+        <wsdl:input name="getLastChangedDevicesRequest" message="tns:getLastChangedDevicesRequest"/>
+        <wsdl:output name="getLastChangedDevicesResponse" message="tns:getLastChangedDevicesResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkInsert">
+        <wsdl:input name="bulkInsertRequest" message="tns:bulkInsertRequest"/>
+        <wsdl:output name="bulkInsertResponse" message="tns:bulkInsertResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkInsertAuto">
+        <wsdl:input name="bulkInsertAutoRequest" message="tns:bulkInsertAutoRequest"/>
+        <wsdl:output name="bulkInsertAutoResponse" message="tns:bulkInsertAutoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkRemove">
+        <wsdl:input name="bulkRemoveRequest" message="tns:bulkRemoveRequest"/>
+        <wsdl:output name="bulkRemoveResponse" message="tns:bulkRemoveResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceInsert">
+        <wsdl:input name="deviceInsertRequest" message="tns:deviceInsertRequest"/>
+        <wsdl:output name="deviceInsertResponse" message="tns:deviceInsertResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddCard">
+        <wsdl:input name="deviceAddCardRequest" message="tns:deviceAddCardRequest"/>
+        <wsdl:output name="deviceAddCardResponse" message="tns:deviceAddCardResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddBulkInterface">
+        <wsdl:input name="deviceAddBulkInterfaceRequest" message="tns:deviceAddBulkInterfaceRequest"/>
+        <wsdl:output name="deviceAddBulkInterfaceResponse" message="tns:deviceAddBulkInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemove">
+        <wsdl:input name="deviceRemoveRequest" message="tns:deviceRemoveRequest"/>
+        <wsdl:output name="deviceRemoveResponse" message="tns:deviceRemoveResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveCard">
+        <wsdl:input name="deviceRemoveCardRequest" message="tns:deviceRemoveCardRequest"/>
+        <wsdl:output name="deviceRemoveCardResponse" message="tns:deviceRemoveCardResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveBulkInterface">
+        <wsdl:input name="deviceRemoveBulkInterfaceRequest" message="tns:deviceRemoveBulkInterfaceRequest"/>
+        <wsdl:output name="deviceRemoveBulkInterfaceResponse" message="tns:deviceRemoveBulkInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceMoveBulkInterface">
+        <wsdl:input name="deviceMoveBulkInterfaceRequest" message="tns:deviceMoveBulkInterfaceRequest"/>
+        <wsdl:output name="deviceMoveBulkInterfaceResponse" message="tns:deviceMoveBulkInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceUpdate">
+        <wsdl:input name="deviceUpdateRequest" message="tns:deviceUpdateRequest"/>
+        <wsdl:output name="deviceUpdateResponse" message="tns:deviceUpdateResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceGlobalRename">
+        <wsdl:input name="deviceGlobalRenameRequest" message="tns:deviceGlobalRenameRequest"/>
+        <wsdl:output name="deviceGlobalRenameResponse" message="tns:deviceGlobalRenameResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setHCPResponse">
+        <wsdl:input name="setHCPResponseRequest" message="tns:setHCPResponseRequest"/>
+        <wsdl:output name="setHCPResponseResponse" message="tns:setHCPResponseResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getBulkInterfaceInfo">
+        <wsdl:input name="getBulkInterfaceInfoRequest" message="tns:getBulkInterfaceInfoRequest"/>
+        <wsdl:output name="getBulkInterfaceInfoResponse" message="tns:getBulkInterfaceInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsertAddress">
+        <wsdl:input name="setInsertAddressRequest" message="tns:setInsertAddressRequest"/>
+        <wsdl:output name="setInsertAddressResponse" message="tns:setInsertAddressResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsertService">
+        <wsdl:input name="setInsertServiceRequest" message="tns:setInsertServiceRequest"/>
+        <wsdl:output name="setInsertServiceResponse" message="tns:setInsertServiceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setDeleteAddress">
+        <wsdl:input name="setDeleteAddressRequest" message="tns:setDeleteAddressRequest"/>
+        <wsdl:output name="setDeleteAddressResponse" message="tns:setDeleteAddressResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setDeleteService">
+        <wsdl:input name="setDeleteServiceRequest" message="tns:setDeleteServiceRequest"/>
+        <wsdl:output name="setDeleteServiceResponse" message="tns:setDeleteServiceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetInfo">
+        <wsdl:input name="getSetInfoRequest" message="tns:getSetInfoRequest"/>
+        <wsdl:output name="getSetInfoResponse" message="tns:getSetInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetNameFromID">
+        <wsdl:input name="getSetNameFromIDRequest" message="tns:getSetNameFromIDRequest"/>
+        <wsdl:output name="getSetNameFromIDResponse" message="tns:getSetNameFromIDResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetAllInterfaces">
+        <wsdl:input name="getSetAllInterfacesRequest" message="tns:getSetAllInterfacesRequest"/>
+        <wsdl:output name="getSetAllInterfacesResponse" message="tns:getSetAllInterfacesResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetInterfacesTrusting">
+        <wsdl:input name="getSetInterfacesTrustingRequest" message="tns:getSetInterfacesTrustingRequest"/>
+        <wsdl:output name="getSetInterfacesTrustingResponse" message="tns:getSetInterfacesTrustingResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getHCPInfoArray">
+        <wsdl:input name="getHCPInfoArrayRequest" message="tns:getHCPInfoArrayRequest"/>
+        <wsdl:output name="getHCPInfoArrayResponse" message="tns:getHCPInfoArrayResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getDevicesFromService">
+        <wsdl:input name="getDevicesFromServiceRequest" message="tns:getDevicesFromServiceRequest"/>
+        <wsdl:output name="getDevicesFromServiceResponse" message="tns:getDevicesFromServiceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchesFromService">
+        <wsdl:input name="getSwitchesFromServiceRequest" message="tns:getSwitchesFromServiceRequest"/>
+        <wsdl:output name="getSwitchesFromServiceResponse" message="tns:getSwitchesFromServiceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchInfo">
+        <wsdl:input name="getSwitchInfoRequest" message="tns:getSwitchInfoRequest"/>
+        <wsdl:output name="getSwitchInfoResponse" message="tns:getSwitchInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getConnectionsFromDevice">
+        <wsdl:input name="getConnectionsFromDeviceRequest" message="tns:getConnectionsFromDeviceRequest"/>
+        <wsdl:output name="getConnectionsFromDeviceResponse" message="tns:getConnectionsFromDeviceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getOutletLocationFromSwitchPort">
+        <wsdl:input name="getOutletLocationFromSwitchPortRequest" message="tns:getOutletLocationFromSwitchPortRequest"/>
+        <wsdl:output name="getOutletLocationFromSwitchPortResponse" message="tns:getOutletLocationFromSwitchPortResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getCurrentConnection">
+        <wsdl:input name="getCurrentConnectionRequest" message="tns:getCurrentConnectionRequest"/>
+        <wsdl:output name="getCurrentConnectionResponse" message="tns:getCurrentConnectionResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getMyCurrentConnection">
+        <wsdl:input name="getMyCurrentConnectionRequest" message="tns:getMyCurrentConnectionRequest"/>
+        <wsdl:output name="getMyCurrentConnectionResponse" message="tns:getMyCurrentConnectionResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="enableFanOutFromSwitchPort">
+        <wsdl:input name="enableFanOutFromSwitchPortRequest" message="tns:enableFanOutFromSwitchPortRequest"/>
+        <wsdl:output name="enableFanOutFromSwitchPortResponse" message="tns:enableFanOutFromSwitchPortResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setUnsetBindedInterface">
+        <wsdl:input name="setUnsetBindedInterfaceRequest" message="tns:setUnsetBindedInterfaceRequest"/>
+        <wsdl:output name="setUnsetBindedInterfaceResponse" message="tns:setUnsetBindedInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceAddAlias">
+        <wsdl:input name="interfaceAddAliasRequest" message="tns:interfaceAddAliasRequest"/>
+        <wsdl:output name="interfaceAddAliasResponse" message="tns:interfaceAddAliasResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceRemoveAlias">
+        <wsdl:input name="interfaceRemoveAliasRequest" message="tns:interfaceRemoveAliasRequest"/>
+        <wsdl:output name="interfaceRemoveAliasResponse" message="tns:interfaceRemoveAliasResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceMoveAlias">
+        <wsdl:input name="interfaceMoveAliasRequest" message="tns:interfaceMoveAliasRequest"/>
+        <wsdl:output name="interfaceMoveAliasResponse" message="tns:interfaceMoveAliasResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceRename">
+        <wsdl:input name="interfaceRenameRequest" message="tns:interfaceRenameRequest"/>
+        <wsdl:output name="interfaceRenameResponse" message="tns:interfaceRenameResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="searchSet">
+        <wsdl:input name="searchSetRequest" message="tns:searchSetRequest"/>
+        <wsdl:output name="searchSetResponse" message="tns:searchSetResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsert">
+        <wsdl:input name="setInsertRequest" message="tns:setInsertRequest"/>
+        <wsdl:output name="setInsertResponse" message="tns:setInsertResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setRemove">
+        <wsdl:input name="setRemoveRequest" message="tns:setRemoveRequest"/>
+        <wsdl:output name="setRemoveResponse" message="tns:setRemoveResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setSwitchPortTypeStatus">
+        <wsdl:input name="setSwitchPortTypeStatusRequest" message="tns:setSwitchPortTypeStatusRequest"/>
+        <wsdl:output name="setSwitchPortTypeStatusResponse" message="tns:setSwitchPortTypeStatusResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="setSwitchPortService">
+        <wsdl:input name="setSwitchPortServiceRequest" message="tns:setSwitchPortServiceRequest"/>
+        <wsdl:output name="setSwitchPortServiceResponse" message="tns:setSwitchPortServiceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchPortTypeStatus">
+        <wsdl:input name="getSwitchPortTypeStatusRequest" message="tns:getSwitchPortTypeStatusRequest"/>
+        <wsdl:output name="getSwitchPortTypeStatusResponse" message="tns:getSwitchPortTypeStatusResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="searchNetNameTable">
+        <wsdl:input name="searchNetNameTableRequest" message="tns:searchNetNameTableRequest"/>
+        <wsdl:output name="searchNetNameTableResponse" message="tns:searchNetNameTableResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddSecondaryInterface">
+        <wsdl:input name="deviceAddSecondaryInterfaceRequest" message="tns:deviceAddSecondaryInterfaceRequest"/>
+        <wsdl:output name="deviceAddSecondaryInterfaceResponse" message="tns:deviceAddSecondaryInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddIPMIInterface">
+        <wsdl:input name="deviceAddIPMIInterfaceRequest" message="tns:deviceAddIPMIInterfaceRequest"/>
+        <wsdl:output name="deviceAddIPMIInterfaceResponse" message="tns:deviceAddIPMIInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveLogicalInterface">
+        <wsdl:input name="deviceRemoveLogicalInterfaceRequest" message="tns:deviceRemoveLogicalInterfaceRequest"/>
+        <wsdl:output name="deviceRemoveLogicalInterfaceResponse" message="tns:deviceRemoveLogicalInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceUpdateDescription">
+        <wsdl:input name="interfaceUpdateDescriptionRequest" message="tns:interfaceUpdateDescriptionRequest"/>
+        <wsdl:output name="interfaceUpdateDescriptionResponse" message="tns:interfaceUpdateDescriptionResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="serviceUpdateDescription">
+        <wsdl:input name="serviceUpdateDescriptionRequest" message="tns:serviceUpdateDescriptionRequest"/>
+        <wsdl:output name="serviceUpdateDescriptionResponse" message="tns:serviceUpdateDescriptionResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceSyncIPMIInterface">
+        <wsdl:input name="deviceSyncIPMIInterfaceRequest" message="tns:deviceSyncIPMIInterfaceRequest"/>
+        <wsdl:output name="deviceSyncIPMIInterfaceResponse" message="tns:deviceSyncIPMIInterfaceResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="getServiceInfo">
+        <wsdl:input name="getServiceInfoRequest" message="tns:getServiceInfoRequest"/>
+        <wsdl:output name="getServiceInfoResponse" message="tns:getServiceInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmCreate">
+        <wsdl:input name="vmCreateRequest" message="tns:vmCreateRequest"/>
+        <wsdl:output name="vmCreateResponse" message="tns:vmCreateResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmMigrate">
+        <wsdl:input name="vmMigrateRequest" message="tns:vmMigrateRequest"/>
+        <wsdl:output name="vmMigrateResponse" message="tns:vmMigrateResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmMove">
+        <wsdl:input name="vmMoveRequest" message="tns:vmMoveRequest"/>
+        <wsdl:output name="vmMoveResponse" message="tns:vmMoveResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmUpdate">
+        <wsdl:input name="vmUpdateRequest" message="tns:vmUpdateRequest"/>
+        <wsdl:output name="vmUpdateResponse" message="tns:vmUpdateResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmDestroy">
+        <wsdl:input name="vmDestroyRequest" message="tns:vmDestroyRequest"/>
+        <wsdl:output name="vmDestroyResponse" message="tns:vmDestroyResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmClusterGetInfo">
+        <wsdl:input name="vmClusterGetInfoRequest" message="tns:vmClusterGetInfoRequest"/>
+        <wsdl:output name="vmClusterGetInfoResponse" message="tns:vmClusterGetInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmClusterGetDevices">
+        <wsdl:input name="vmClusterGetDevicesRequest" message="tns:vmClusterGetDevicesRequest"/>
+        <wsdl:output name="vmClusterGetDevicesResponse" message="tns:vmClusterGetDevicesResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmGetInfo">
+        <wsdl:input name="vmGetInfoRequest" message="tns:vmGetInfoRequest"/>
+        <wsdl:output name="vmGetInfoResponse" message="tns:vmGetInfoResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmGetClusterMembership">
+        <wsdl:input name="vmGetClusterMembershipRequest" message="tns:vmGetClusterMembershipRequest"/>
+        <wsdl:output name="vmGetClusterMembershipResponse" message="tns:vmGetClusterMembershipResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="vmSearchCluster">
+        <wsdl:input name="vmSearchClusterRequest" message="tns:vmSearchClusterRequest"/>
+        <wsdl:output name="vmSearchClusterResponse" message="tns:vmSearchClusterResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="dnsZoneUpdate">
+        <wsdl:input name="dnsZoneUpdateRequest" message="tns:dnsZoneUpdateRequest"/>
+        <wsdl:output name="dnsZoneUpdateResponse" message="tns:dnsZoneUpdateResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="svcPrincipalAdd">
+        <wsdl:input name="svcPrincipalAddRequest" message="tns:svcPrincipalAddRequest"/>
+        <wsdl:output name="svcPrincipalAddResponse" message="tns:svcPrincipalAddResponse" />
+    </wsdl:operation>
+
+    <wsdl:operation name="svcPrincipalRemove">
+        <wsdl:input name="svcPrincipalRemoveRequest" message="tns:svcPrincipalRemoveRequest"/>
+        <wsdl:output name="svcPrincipalRemoveResponse" message="tns:svcPrincipalRemoveResponse" />
+    </wsdl:operation>
+
+</wsdl:portType>
+
+<!-- Bindings -->
+<wsdl:binding name="NetworkServiceBinding"
+              type="tns:NetworkServiceInterface">
+    <soap:binding style="rpc"
+                  transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <wsdl:operation name="getAuthToken">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getAuthTokenRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Login Password Type" />
+        </wsdl:input>
+        <wsdl:output name="getAuthTokenResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="searchDevice">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="searchDeviceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceSearch" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:searchDeviceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="searchDeviceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getDeviceInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getDeviceInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getDeviceInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfoArray">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getDeviceInfoArrayRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceNameList" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getDeviceInfoArrayRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getDeviceInfoArrayResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getDeviceInfoFromNameMAC">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getDeviceInfoFromNameMACRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName MAC" />
+        </wsdl:input>
+        <wsdl:output name="getDeviceInfoFromNameMACResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getMyDeviceInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getMyDeviceInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded"  />
+        </wsdl:input>
+        <wsdl:output name="getMyDeviceInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getLastChangedDevices">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getLastChangedDevicesRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Minutes" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getLastChangedDevicesRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getLastChangedDevicesResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkInsert">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="bulkInsertRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Device Cards Interfaces" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:bulkInsertRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="bulkInsertResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkInsertAuto">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="bulkInsertAutoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Device Cards Interfaces" />
+        </wsdl:input>
+        <wsdl:output name="bulkInsertAutoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="bulkRemove">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="bulkRemoveRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:bulkRemoveRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="bulkRemoveResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceInsert">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceInsertRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Device" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceInsertRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceInsertResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddCard">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceAddCardRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName InterfaceCard" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceAddCardRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceAddCardResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddBulkInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceAddBulkInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName BulkInterface" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceAddBulkInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceAddBulkInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemove">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceRemoveRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceRemoveRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceRemoveResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveCard">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceRemoveCardRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName HardwareAddress" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceRemoveCardRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceRemoveCardResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveBulkInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceRemoveBulkInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName InterfaceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceRemoveBulkInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceRemoveBulkInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceMoveBulkInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceMoveBulkInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName InterfaceName BulkInterface BulkMoveOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceMoveBulkInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceMoveBulkInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceUpdate">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceUpdateRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName DeviceInput" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceUpdateRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceUpdateResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceGlobalRename">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceGlobalRenameRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName NewDeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceGlobalRenameRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceGlobalRenameResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setHCPResponse">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setHCPResponseRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceList HCPFlag" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setHCPResponseRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setHCPResponseResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getBulkInterfaceInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getBulkInterfaceInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getBulkInterfaceInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getBulkInterfaceInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsertAddress">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setInsertAddressRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Set Address" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setInsertAddressRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setInsertAddressResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsertService">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setInsertServiceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Set Service" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setInsertServiceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setInsertServiceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setDeleteAddress">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setDeleteAddressRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Set Address" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setDeleteAddressRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setDeleteAddressResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setDeleteService">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setDeleteServiceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Set Service" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setDeleteServiceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setDeleteServiceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSetInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSetInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSetInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetNameFromID">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSetNameFromIDRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetID" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSetNameFromIDRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSetNameFromIDResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetAllInterfaces">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSetAllInterfacesRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSetAllInterfacesRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSetAllInterfacesResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSetInterfacesTrusting">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSetInterfacesTrustingRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSetInterfacesTrustingRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSetInterfacesTrustingResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getHCPInfoArray">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getHCPInfoArrayRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Hosts" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getHCPInfoArrayRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getHCPInfoArrayResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getDevicesFromService">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getDevicesFromServiceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Service" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getDevicesFromServiceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getDevicesFromServiceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchesFromService">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSwitchesFromServiceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Service" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSwitchesFromServiceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSwitchesFromServiceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSwitchInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSwitchInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSwitchInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getConnectionsFromDevice">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getConnectionsFromDeviceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getConnectionsFromDeviceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getConnectionsFromDeviceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getOutletLocationFromSwitchPort">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getOutletLocationFromSwitchPortRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName PortName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getOutletLocationFromSwitchPortRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getOutletLocationFromSwitchPortResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getCurrentConnection">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getCurrentConnectionRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="ip HardwareAddressList" />
+        </wsdl:input>
+        <wsdl:output name="getCurrentConnectionResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getMyCurrentConnection">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getMyCurrentConnectionRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="HardwareAddressList" />
+        </wsdl:input>
+        <wsdl:output name="getMyCurrentConnectionResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="enableFanOutFromSwitchPort">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="enableFanOutFromSwitchPortRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName PortName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:enableFanOutFromSwitchPortRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="enableFanOutFromSwitchPortResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setUnsetBindedInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setUnsetBindedInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName HardwareAddress" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setUnsetBindedInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setUnsetBindedInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceAddAlias">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="interfaceAddAliasRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName Alias" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:interfaceAddAliasRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="interfaceAddAliasResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceRemoveAlias">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="interfaceRemoveAliasRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName Alias" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:interfaceRemoveAliasRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="interfaceRemoveAliasResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceMoveAlias">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="interfaceMoveAliasRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName Alias NewInterfaceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:interfaceMoveAliasRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="interfaceMoveAliasResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceRename">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="interfaceRenameRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName NewInterfaceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:interfaceRenameRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="interfaceRenameResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="searchSet">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="searchSetRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetPattern" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:searchSetRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="searchSetResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setInsert">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setInsertRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Set" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setInsertRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setInsertResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setRemove">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setRemoveRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SetName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setRemoveRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setRemoveResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setSwitchPortTypeStatus">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setSwitchPortTypeStatusRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName PortName SwitchPortTypeStatus" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setSwitchPortTypeStatusRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setSwitchPortTypeStatusResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="setSwitchPortService">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="setSwitchPortServiceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName PortName Service" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:setSwitchPortServiceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="setSwitchPortServiceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSwitchPortTypeStatus">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getSwitchPortTypeStatusRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="SwitchName PortName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getSwitchPortTypeStatusRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getSwitchPortTypeStatusResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="searchNetNameTable">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="searchNetNameTableRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="NetName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:searchNetNameTableRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="searchNetNameTableResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddSecondaryInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceAddSecondaryInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName BaseInterfaceName LogicalInterface" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceAddSecondaryInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceAddSecondaryInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceAddIPMIInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceAddIPMIInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName BaseInterfaceName InterfaceCard IPMIOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceAddIPMIInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceAddIPMIInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceRemoveLogicalInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceRemoveLogicalInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName InterfaceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceRemoveLogicalInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceRemoveLogicalInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="interfaceUpdateDescription">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="interfaceUpdateDescriptionRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="InterfaceName Description" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:interfaceUpdateDescriptionRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="interfaceUpdateDescriptionResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="serviceUpdateDescription">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="serviceUpdateDescriptionRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="ServiceName Description" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:serviceUpdateDescriptionRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="serviceUpdateDescriptionResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="deviceSyncIPMIInterface">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="deviceSyncIPMIInterfaceRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName InterfaceName IPMIInterfaceName IPMIOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:deviceSyncIPMIInterfaceRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="deviceSyncIPMIInterfaceResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="getServiceInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="getServiceInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="ServiceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:getServiceInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="getServiceInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmCreate">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmCreateRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMDevice InterfaceCard VMClusterName VMParent VMOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmCreateRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmCreateResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmMigrate">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmMigrateRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMName NewParent" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmMigrateRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmMigrateResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmMove">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmMoveRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMName VMClusterName VMParent VMOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmMoveRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmMoveResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmUpdate">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmUpdateRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName DeviceInput" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmUpdateRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmUpdateResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmDestroy">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmDestroyRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmDestroyRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmDestroyResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmClusterGetInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmClusterGetInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMClusterName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmClusterGetInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmClusterGetInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmClusterGetDevices">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmClusterGetDevicesRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMClusterName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmClusterGetDevicesRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmClusterGetDevicesResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmGetInfo">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmGetInfoRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmGetInfoRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmGetInfoResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmGetClusterMembership">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmGetClusterMembershipRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmGetClusterMembershipRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmGetClusterMembershipResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="vmSearchCluster">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="vmSearchClusterRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="VMClusterSearch" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:vmSearchClusterRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="vmSearchClusterResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="dnsZoneUpdate">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="dnsZoneUpdateRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="Zone DnsZoneOptions" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:dnsZoneUpdateRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="dnsZoneUpdateResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="svcPrincipalAdd">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="svcPrincipalAddRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName ServiceName Person" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:svcPrincipalAddRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="svcPrincipalAddResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="svcPrincipalRemove">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input name="svcPrincipalRemoveRequest">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" parts="DeviceName ServiceName" />
+            <soap:header encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" message="tns:svcPrincipalRemoveRequest"
+                       part="Auth" />
+        </wsdl:input>
+        <wsdl:output name="svcPrincipalRemoveResponse">
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                       namespace="urn:NetworkService"
+                       use="encoded" />
+        </wsdl:output>
+    </wsdl:operation>
+</wsdl:binding>
+
+<wsdl:types>
+<!-- BEGINXMLSchema data -->
+   <xsd:schema
+       targetNamespace="urn:NetworkDataTypes"
+       xmlns:types="urn:NetworkDataTypes"
+       elementFormDefault="qualified" 
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
+
+       <xsd:complexType name="DeviceInput">
+           <xsd:sequence>
+                   <xsd:element name="DeviceName" nillable="false" type="xsd:string" />
+                   <xsd:element name="Location" nillable="false" type="types:Location" />
+                   <xsd:element name="Zone" nillable="true" type="xsd:string" />
+                   <xsd:element name="Manufacturer" nillable="false" type="xsd:string" />
+                   <xsd:element name="Model" nillable="false" type="xsd:string" />
+                   <xsd:element name="Description" nillable="true" type="xsd:string" />
+                   <xsd:element name="Tag" nillable="true" type="xsd:string" />
+                   <xsd:element name="SerialNumber" nillable="true" type="xsd:string" />
+                   <xsd:element name="OperatingSystem" nillable="false" type="types:OperatingSystem" />
+                   <xsd:element name="InventoryNumber" nillable="true" type="xsd:string" />
+                   <xsd:element name="ResponsiblePerson" nillable="false" type="types:PersonInput" />
+                   <xsd:element name="UserPerson" nillable="true" type="types:PersonInput" />
+                   <xsd:element name="HCPResponse" nillable="true" type="xsd:boolean" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="DeviceInfo">
+           <xsd:sequence>
+               <xsd:element name="DeviceName" nillable="false" type="xsd:string" />
+               <xsd:element name="Location" nillable="true" type="types:Location" />
+               <xsd:element name="Zone" nillable="true" type="xsd:string" />
+               <xsd:element name="Status" nillable="false" type="xsd:string" />
+               <xsd:element name="Manufacturer" nillable="false" type="xsd:string" />
+               <xsd:element name="Model" nillable="false" type="xsd:string" />
+               <xsd:element name="GenericType" nillable="false" type="xsd:string" />
+               <xsd:element name="Description" nillable="true" type="xsd:string" />
+               <xsd:element name="Tag" nillable="true" type="xsd:string" />
+               <xsd:element name="SerialNumber" nillable="true" type="xsd:string" />
+               <xsd:element name="OperatingSystem" nillable="false" type="types:OperatingSystem" />
+               <xsd:element name="InventoryNumber" nillable="true" type="xsd:string" />
+               <xsd:element name="StartDate" nillable="true" type="types:Time" />
+               <xsd:element name="EndDate" nillable="true" type="types:Time" />
+               <xsd:element name="ResponsiblePerson" nillable="true" type="types:Person" />
+               <xsd:element name="UserPerson" nillable="true" type="types:Person" />
+               <xsd:element name="NetworkInterfaceCards" nillable="true" type="types:ArrayOfInterfaceCards" />
+               <xsd:element name="Interfaces" nillable="true" type="types:ArrayOfInterfaces" />
+               <xsd:element name="HCPResponse" nillable="false" type="xsd:boolean" />
+               <xsd:element name="Blocked" nillable="true" type="types:Blocking" />
+               <xsd:element name="LastChangeDate" nillable="true" type="types:Time" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="ArrayOfDeviceInfo">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:DeviceInfo[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+       </xsd:complexType>
+
+       <xsd:complexType name="Location">
+            <xsd:sequence>
+                <xsd:element name="Building" nillable="false" type="xsd:string"
+/>
+                <xsd:element name="Floor" nillable="false" type="xsd:string" />
+                <xsd:element name="Room" nillable="false" type="xsd:string" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="OperatingSystem">
+            <xsd:sequence>
+                <xsd:element name="Name" nillable="false" type="xsd:string" />
+                <xsd:element name="Version" nillable="false" type="xsd:string" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="InterfaceCard">
+            <xsd:sequence>
+                <xsd:element name="HardwareAddress" nillable="false" type="xsd:string" />
+                <xsd:element name="CardType" nillable="false" type="xsd:string" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+       
+         <xsd:complexType name="ArrayOfInterfaceCards">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:InterfaceCard[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+
+       
+       <xsd:complexType name="InterfaceInformation">
+            <xsd:sequence>
+                <xsd:element name="ConnectedToSC" nillable="true" type="xsd:boolean" />
+                <xsd:element name="Name" nillable="false" type="xsd:string" />
+                <xsd:element name="Domain" nillable="false" type="xsd:string" />
+                <xsd:element name="IPAddress" nillable="false" type="xsd:string" />
+                <xsd:element name="ServiceName" nillable="false" type="xsd:string" />
+                <xsd:element name="SecurityClass" nillable="false" type="xsd:string" />
+                <xsd:element name="InternetConnectivity" nillable="false" type="xsd:boolean" />
+                <xsd:element name="SubnetMask" nillable="true" type="xsd:string" />
+                <xsd:element name="DefaultGateway" nillable="true" type="xsd:string" />
+                <xsd:element name="NameServers" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="BelongsToSets" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="TimeServers" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="IPAliases" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="BoundInterfaceCard" nillable="true" type="types:InterfaceCard" />
+                <xsd:element name="Outlet" nillable="true" type="types:Outlet" />
+                <xsd:element name="RackName" nillable="true" type="xsd:string" />
+                <xsd:element name="Description" nillable="true" type="xsd:string" />
+                <xsd:element name="NetworkDomainName" nillable="false" type="xsd:string" />
+                <xsd:element name="Medium" nillable="false" type="xsd:string" />
+                <xsd:element name="ReverseTelnet" nillable="true" type="types:ReverseTelnet" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+        <xsd:complexType name="ArrayOfString">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
+                </xsd:restriction>
+            </xsd:complexContent>
+        </xsd:complexType>
+       
+       <xsd:complexType name="ArrayOfInterfaces">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:InterfaceInformation[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+       
+ 
+       <xsd:complexType name="Person">
+            <xsd:sequence>
+                <xsd:element name="Name" nillable="false" type="xsd:string" />
+                <xsd:element name="FirstName" nillable="false" type="xsd:string" />
+                <xsd:element name="Department" nillable="true" type="xsd:string" />
+                <xsd:element name="Group" nillable="true" type="xsd:string" />
+                <xsd:element name="Email" nillable="true" type="xsd:string" />
+                <xsd:element name="Phone" nillable="true" type="xsd:string" />
+                <xsd:element name="CCID" nillable="true" type="xsd:long" />
+            </xsd:sequence>
+       </xsd:complexType>
+       
+       <xsd:complexType name="PersonInput">
+            <xsd:sequence>
+                <xsd:element name="Name" nillable="false" type="xsd:string" />
+                <xsd:element name="FirstName" nillable="false" type="xsd:string" />
+                <xsd:element name="Department" nillable="true" type="xsd:string" />
+                <xsd:element name="Group" nillable="true" type="xsd:string" />                
+            </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="Outlet">
+            <xsd:sequence>
+                <xsd:element name="ID" nillable="false" type="xsd:string" />
+                <xsd:element name="FANOUT" nillable="false" type="xsd:boolean" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="OutletLocation">
+            <xsd:sequence>
+                <xsd:element name="Location" nillable="false" type="types:Location" />
+                <xsd:element name="Outlet" nillable="false" type="types:Outlet" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+
+       <xsd:complexType name="ReverseTelnet">
+            <xsd:sequence>                
+                <xsd:element name="Data" nillable="true" type="xsd:string" />
+                <xsd:element name="Port" nillable="true" type="xsd:string" />
+                <xsd:element name="ServiceName" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="Time">
+            <xsd:sequence>                
+                <xsd:element name="TimeUTC" nillable="true" type="xsd:dateTime" />
+                <xsd:element name="unixtime" nillable="true" type="xsd:long" />
+            </xsd:sequence>
+       </xsd:complexType>
+       
+       <xsd:complexType name="Blocking">
+            <xsd:sequence>
+                <xsd:element name="By" nillable="false" type="types:Person" />                
+                <xsd:element name="Date" nillable="false" type="types:Time" />
+                <xsd:element name="Reason" nillable="false" type="xsd:string" />
+                <xsd:element name="UnblockRole" nillable="false" type="xsd:string" />                
+            </xsd:sequence>
+       </xsd:complexType>
+       
+      <!-- Search Related -->
+      <xsd:complexType name="DeviceSearch">
+            <xsd:sequence>
+                 <xsd:element name="Name" nillable="true" type="xsd:string" />
+                 <xsd:element name="Surname" nillable="true" type="xsd:string" />
+                 <xsd:element name="FirstName" nillable="true" type="xsd:string" />
+                 <xsd:element name="Location" nillable="true" type="types:Location" />
+                 <xsd:element name="OutletID" nillable="true" type="xsd:string" />
+                 <xsd:element name="Tag" nillable="true" type="xsd:string" />
+                 <xsd:element name="SerialNumber" nillable="true" type="xsd:string" />
+                 <xsd:element name="InventoryNumber" nillable="true" type="xsd:string" />
+                 <xsd:element name="HardwareAddress" nillable="true" type="xsd:string" />
+                 <xsd:element name="IPAddress" nillable="true" type="xsd:string" />
+                 <xsd:element name="RackName" nillable="true" type="xsd:string" />
+                 <xsd:element name="PersonID" nillable="true" type="xsd:long" />
+                 <xsd:element name="Domain" nillable="true" type="xsd:string" />
+                 <xsd:element name="ResponsibleDepGroup" nillable="true" type="xsd:string" />
+                 <xsd:element name="OperatingSystem" nillable="true" type="xsd:string" />
+                 <xsd:element name="LastChangeDate" nillable="true" type="xsd:dateTime" />
+                 <xsd:element name="LastActiveDate" nillable="true" type="xsd:dateTime" />
+            </xsd:sequence>
+      </xsd:complexType>
+      <!-- Bulk related -->
+
+      <xsd:complexType name="BulkInterface">
+            <xsd:sequence>
+                 <xsd:element name="InterfaceName" nillable="true" type="xsd:string" />
+                 <xsd:element name="IPAliases" nillable="true" type="types:ArrayOfString" />
+                 <xsd:element name="Location" nillable="false" type="types:Location" />
+                 <xsd:element name="OutletLabel" nillable="false" type="xsd:string" />
+                 <xsd:element name="SecurityClass" nillable="false" type="xsd:string" />
+                 <xsd:element name="InternetConnectivity" nillable="false" type="xsd:boolean" />
+                 <xsd:element name="Medium" nillable="false" type="xsd:string" />
+                 <xsd:element name="SwitchName" nillable="false" type="xsd:string" />
+                 <xsd:element name="PortNumber" nillable="false" type="xsd:string" />
+                 <xsd:element name="CableNumber" nillable="false" type="xsd:string" />
+                 <xsd:element name="IP" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="BulkInterfaceAuto">
+            <xsd:sequence>
+                 <xsd:element name="InterfaceName" nillable="true" type="xsd:string" />
+                 <xsd:element name="IPAliases" nillable="true" type="types:ArrayOfString" />
+                 <xsd:element name="Location" nillable="false" type="types:Location" />
+                 <xsd:element name="OutletLabel" nillable="false" type="xsd:string" />
+                 <xsd:element name="SecurityClass" nillable="false" type="xsd:string" />
+                 <xsd:element name="InternetConnectivity" nillable="false" type="xsd:boolean" />
+                 <xsd:element name="Medium" nillable="false" type="xsd:string" />
+                 <xsd:element name="SwitchName" nillable="false" type="xsd:string" />
+                 <xsd:element name="PortNumber" nillable="false" type="xsd:string" />
+                 <xsd:element name="CableNumber" nillable="false" type="xsd:string" />
+                 <xsd:element name="IP" nillable="true" type="xsd:string" />
+                 <xsd:element name="BindHardwareAddress" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ArrayOfBulkInterfaces">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:BulkInterface[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfBulkInterfacesAuto">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:BulkInterfaceAuto[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+ 
+      <xsd:complexType name="BulkMoveOptions">
+          <xsd:sequence>
+              <xsd:element name="PreserveIP" type="xsd:boolean" />
+          </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Header related -->
+      <xsd:complexType name="Auth">
+          <xsd:sequence>
+              <xsd:element name="token" nillable="false" type="xsd:string" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+       <xsd:complexType name="SetInfo">
+           <xsd:sequence>
+               <xsd:element name="ID" nillable="true" type="xsd:long" />
+               <xsd:element name="Addresses" nillable="true" type="types:ArrayOfString" />
+               <xsd:element name="Services" nillable="true" type="types:ArrayOfString" />
+               <xsd:element name="Sets" nillable="true" type="types:ArrayOfString" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+
+    <xsd:complexType name="ArrayOfSwitchPort">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:SwitchPort[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+
+       <xsd:complexType name="SwitchPort">
+           <xsd:sequence>
+               <xsd:element name="Name" nillable="false" type="xsd:string" />
+               <xsd:element name="Service" nillable="false" type="xsd:string" />
+               <xsd:element name="Medium" nillable="false" type="xsd:string" />
+               <xsd:element name="Type" nillable="false" type="xsd:string" />
+               <xsd:element name="Status" nillable="false" type="xsd:string" />
+               <xsd:element name="InUse" nillable="false" type="xsd:boolean" />
+               <xsd:element name="Devices" nillable="true" type="types:ArrayOfString" />
+               <xsd:element name="Terminals" nillable="true" type="types:ArrayOfString" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="SwitchPortTypeStatus">
+           <xsd:sequence>
+               <xsd:element name="Type" nillable="false" type="xsd:string" />
+               <xsd:element name="Status" nillable="false" type="xsd:string" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+
+       <xsd:complexType name="InetInfo">
+           <xsd:sequence>
+               <xsd:element name="HostName" nillable="false" type="xsd:string" />
+               <xsd:element name="HardwareAddress" nillable="false" type="xsd:string" />
+               <xsd:element name="IP" nillable="false" type="xsd:string" />
+               <xsd:element name="NetAddress" nillable="false" type="xsd:string" />
+               <xsd:element name="Mask" nillable="false" type="xsd:string" />
+               <xsd:element name="GatewayAddress" nillable="false" type="xsd:string" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+        <xsd:complexType name="ArrayOfConnection">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:Connection[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="ArrayOfObservedSwitchConnection">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:ObservedSwitchConnection[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+
+        <xsd:complexType name="ArrayOfInetInfo">
+            <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:InetInfo[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+      </xsd:complexType>
+       
+    
+
+       <xsd:complexType name="Connection">
+           <xsd:sequence>
+               <xsd:element name="InterfaceName" nillable="false" type="xsd:string" />
+               <xsd:element name="SwitchName" nillable="false" type="xsd:string" />
+               <xsd:element name="SwitchPort" nillable="false" type="xsd:string" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="ObservedSwitchConnection">
+           <xsd:sequence>
+               <xsd:element name="SwitchName" nillable="false" type="xsd:string" />
+               <xsd:element name="SwitchPort" nillable="false" type="xsd:string" />
+               <xsd:element name="HardwareAddress" nillable="false" type="xsd:string" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="SetInput">
+           <xsd:sequence>
+               <xsd:element name="Name" nillable="false" type="xsd:string" />
+               <xsd:element name="Domain" nillable="true" type="xsd:string" />
+               <xsd:element name="ResponsiblePerson" nillable="false" type="types:Person" />
+               <xsd:element name="Description" nillable="false" type="xsd:string" />
+               <xsd:element name="ProjectUrl" nillable="false" type="xsd:string" />
+               <xsd:element name="Type" nillable="false" type="xsd:string" /> 
+               <!-- Type is INTRA or INTER -->
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="NetNameTuple">
+           <xsd:sequence>
+               <xsd:element name="DeviceName" nillable="false" type="xsd:string" /> 
+               <xsd:element name="InterfaceName" nillable="false" type="xsd:string" /> 
+               <xsd:element name="IP" nillable="false" type="xsd:string" /> 
+               <xsd:element name="Alias" nillable="true" type="xsd:string" /> 
+           </xsd:sequence>
+           </xsd:complexType>
+
+       <xsd:complexType name="ArrayOfNetNameTuple">
+         <xsd:complexContent>
+                <xsd:restriction base="soapenc:Array">
+                    <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="types:NetNameTuple[]"/>
+                </xsd:restriction>
+         </xsd:complexContent>
+       </xsd:complexType>
+
+       <xsd:complexType name="LogicalInterfaceInput">
+           <xsd:sequence>
+                 <xsd:element name="InterfaceName" nillable="false" type="xsd:string" />
+                 <xsd:element name="ServiceName" nillable="false" type="xsd:string" />
+                 <xsd:element name="SecurityClass" nillable="false" type="xsd:string" />
+                 <xsd:element name="IP" nillable="true" type="xsd:string" />
+                 <xsd:element name="InternetConnectivity" nillable="true" type="xsd:boolean" />
+           </xsd:sequence>
+       </xsd:complexType>
+
+       <xsd:complexType name="ServiceInfo">
+            <xsd:sequence>
+                <xsd:element name="Name" nillable="false" type="xsd:string" />
+                <xsd:element name="Primary" nillable="true" type="xsd:string" />
+                <xsd:element name="AddressIni" nillable="false" type="xsd:string" />
+                <xsd:element name="AddressEnd" nillable="false" type="xsd:string" />
+                <xsd:element name="AddressCount" nillable="false" type="xsd:int" />
+                <xsd:element name="SubnetMask" nillable="false" type="xsd:string" />
+                <xsd:element name="DefaultGateway" nillable="true" type="xsd:string" />
+                <xsd:element name="NameServers" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="TimeServers" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="Mediums" nillable="true" type="types:ArrayOfString" />
+                <xsd:element name="NetworkDomain" nillable="true" type="xsd:string" />
+                <xsd:element name="Description" nillable="true" type="xsd:string" />
+                <xsd:element name="UserIPTotal" nillable="false" type="xsd:int" />
+                <xsd:element name="UserIPFree" nillable="false" type="xsd:int" />
+            </xsd:sequence>
+       </xsd:complexType>
+
+      <xsd:complexType name="DnsZoneOptions">
+          <xsd:sequence>
+              <xsd:element name="Internal" nillable="true" type="xsd:boolean" />
+              <xsd:element name="External" nillable="true" type="xsd:boolean" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+
+      <xsd:complexType name="VMOptions">
+          <xsd:sequence>
+              <xsd:element name="IP" nillable="true" type="xsd:string" />
+              <xsd:element name="Service" nillable="true" type="xsd:string" />
+              <xsd:element name="InternetConnectivity" nillable="true" type="xsd:string" />
+              <!-- AddressType PUBLIC or PRIVATE -->
+              <xsd:element name="AddressType" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="VMInfo">
+          <xsd:sequence>
+              <xsd:element name="Name" nillable="false" type="xsd:string" />
+              <xsd:element name="IsVM" nillable="false" type="xsd:boolean" />
+              <xsd:element name="VMParent" nillable="true" type="xsd:string" />
+              <xsd:element name="VMGuestList" nillable="true" type="types:ArrayOfString" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="VMClusterInfo">
+          <xsd:sequence>
+              <xsd:element name="ID" nillable="false" type="xsd:long" />
+              <xsd:element name="Name" nillable="false" type="xsd:string" />
+              <xsd:element name="Description" nillable="true" type="xsd:string" />
+              <xsd:element name="ResponsiblePerson" nillable="true" type="types:Person" />
+              <xsd:element name="Services" nillable="true" type="types:ArrayOfString" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="IPMIOptions">
+          <xsd:sequence>
+              <xsd:element name="UseDeviceName" nillable="true" type="xsd:boolean" />
+          </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- Search Related -->
+      <xsd:complexType name="VMClusterSearch">
+            <xsd:sequence>
+                 <xsd:element name="ClusterName" nillable="true" type="xsd:string" />
+                 <xsd:element name="Surname" nillable="true" type="xsd:string" />
+                 <xsd:element name="FirstName" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+      </xsd:complexType>
+
+
+  </xsd:schema>
+<!-- ENDXMLSchema data -->
+</wsdl:types>
+</wsdl:definitions>
