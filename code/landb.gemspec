@@ -2,7 +2,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
   s.name        = 'landb'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2012-08-17'
   s.summary     = "This is a WSDL dynamic wrapper for lanDB to puppet use."
   s.description = "This is a WSDL dynamic wrapper for lanDB to puppet use. It's writen from Anastasis Andronidis as an OpenLab Summer Student project"
