@@ -1,5 +1,5 @@
 module Puppet::Parser::Functions
-  newfunction(:landb_func, :type => :rvalue, :doc => "A puppet funtion to integrate with LanDB") do |args|
+  newfunction(:landb_func, :type => :rvalue, :doc => "A puppet function to integrate with LanDB") do |args|
 
     require 'rubygems'
     require 'yaml'
