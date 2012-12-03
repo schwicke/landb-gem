@@ -87,9 +87,13 @@ class LandbClient
     end
     @client.http.auth.ssl.verify_mode = :none
 
-    # Initialize the token, so the client would be ready for usage.
-    self.get_auth_token [@@config["username"], @@config["password"], "NICE"]
-    
+    # Initialize the token, so the client would be ready for usage
+    # only if name and password have been provided
+
+    if (!@@config['username'].nil? || !@@config['password'].nil?)
+      self.get_auth_token [@@config["username"], @@config["password"], "NICE"] 
+    end
+
   end
   
   def print_auth_token
