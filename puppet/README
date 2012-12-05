@@ -14,7 +14,7 @@ An example for puppet:
 
 On a test.pp file write:
 
-	$hash = cern_lan_db_func({ "method" => "get_device_info",
+	$hash = landb_func({ "method" => "get_device_info",
 	                      "method_arguments" => "PCITCS57",
 	                      "response_info" => [["device_info", "responsible_person", "name"], ["device_info", "responsible_person", "email"]]
 	                    })
