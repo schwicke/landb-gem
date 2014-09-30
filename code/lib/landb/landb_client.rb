@@ -17,26 +17,20 @@ class LandbClient
     if !@@config 
       return
     end
-    
-    # Make HTTPI silent.
-    HTTPI.log = false
-    
-    # Make savon silent.
-    Savon.configure do |savon_config|
-      savon_config.log = false
-    end
-    
+
     # Getting the SOAP client with WSDL specifications.
-    @client = Savon.client(@@config["wsdl"]) 
-    @client.http.auth.ssl.verify_mode = :none
-  
+    @client = Savon.client do
+      wsdl @@config["wsdl"]
+      log false
+      ssl_verify_mode :none
+    end
 
     # Create a hash that contains all the operations and arguments that SOAP server supports.
     # e.g. The get_auth_token action is taking 3 arguments: Login, Password, Type.
     @operations_to_arguments_hash = get_all_operations_and_arguments
     
     # For each action the SOAP server supports, we create a dynamic method for our class.
-    @client.wsdl.soap_actions.each do |method_name|
+    @client.operations.each do |method_name|
       # Ruby method "send" helps us to create the methods of the class.
       self.class.send :define_method, method_name do |arg|
         
@@ -48,48 +42,29 @@ class LandbClient
           puts 'Arguments should be in an array. e.g. ["test", "test2"]'
           return
         end
-        
-        # For each action we have, we must integrate it with Savon.
-        response = @client.request(:message, method_name) do |soap|
-          # We are dynamically creating the content of the SOAP request.
-          soap.header = {"Auth" => {"token" => @auth_token } } if @auth_token
-          
-          soap.body = {}
-          
-          i = 0
-          # The operations_to_arguments_hash hash has all the needed arguments for the request.
-          # We populate the soap arguments with the user arguments.
-          @operations_to_arguments_hash[method_name].each do |soap_argument|
-            soap.body.merge! soap_argument => arg[i]
-            i+=1
-          end
-          
-          # Savon tutorials infoms that if you are using ruby<1.9 there might be problems with the order.
-          # This is a workaround to this problem.
-          soap.body.merge! :order! => @operations_to_arguments_hash[method_name]
-          
+
+        # First we create the body of the request
+        body = {}
+
+        # The operations_to_arguments_hash hash has all the needed arguments for the request.
+        # We populate the soap arguments with the user arguments.
+        @operations_to_arguments_hash[method_name].each_with_index do |soap_argument, index|
+          body.merge! soap_argument => arg[index]
         end
-        
+
+        response = @client.call(method_name, :message => body)
+
         # We are setting the auth token automatically when existes.
         if response.to_hash[:get_auth_token_response]
           @auth_token = response.to_hash[:get_auth_token_response][:token]
         end
-        
+
         LandbResponse.new(response.to_hash["#{method_name}_response".to_sym])
       end
     end
-          
-    # There is a bug in the current version of Savon.(?)(i am using 1.1.0) This is a workarround. 
-    # Ref: https://github.com/rubiii/savon/pull/275
-    @client = Savon.client do |wsdl|
-      wsdl.endpoint = @client.wsdl.endpoint.to_s
-      wsdl.namespace = @client.wsdl.namespace
-    end
-    @client.http.auth.ssl.verify_mode = :none
 
     # Initialize the token, so the client would be ready for usage
     # only if name and password have been provided
-
     if (!@@config['username'].nil? || !@@config['password'].nil?)
       self.get_auth_token [@@config["username"], @@config["password"], "NICE"] 
     end
@@ -115,7 +90,8 @@ class LandbClient
   def get_all_operations_and_arguments
     hash = {}
 
-    @client.wsdl.parser.document.xpath('wsdl:definitions/wsdl:binding/wsdl:operation').each do |action|      
+    nok = Nokogiri::XML(open(@@config["wsdl"]))
+    nok.xpath('wsdl:definitions/wsdl:binding/wsdl:operation').each do |action|
       action.children.each do |child_node|
         next unless child_node.element? && child_node.name == "input"
 
