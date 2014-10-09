@@ -1,3 +1,5 @@
 require 'savon'
+require 'nokogiri'
+require 'open-uri'
 require 'landb/landb_client'
 require 'landb/landb_responce'
