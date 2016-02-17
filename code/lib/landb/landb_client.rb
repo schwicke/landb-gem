@@ -42,7 +42,6 @@ class LandbClient
           puts 'Arguments should be in an array. e.g. ["test", "test2"]'
           return
         end
-
         # First we create the body of the request
         body = {}
 
@@ -52,7 +51,11 @@ class LandbClient
           body.merge! soap_argument => arg[index]
         end
 
-        response = @client.call(method_name, :message => body)
+        if @auth_token then
+          response = @client.call(method_name, :soap_header => {"Auth" => {"token" => @auth_token } }, :message => body)
+        else
+          response = @client.call(method_name, :message => body)
+        end
 
         # We are setting the auth token automatically when existes.
         if response.to_hash[:get_auth_token_response]
